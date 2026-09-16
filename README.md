@@ -4,9 +4,23 @@ Prebuilt SQLite dictionary for [Jisho](https://github.com/simiriva95/jisho-deskt
 published as release assets. Nothing here is written by hand — the file is produced
 by `pnpm data:build` in that repository.
 
-Each release carries `dictionary.sqlite.gz`. The tag names the build date; the
-`meta` table inside the database records the schema version and the version of
-every source that went into it.
+`dictionary.sqlite.gz` is committed to this repository, and each release tags the
+commit it was built from. The `meta` table inside the database records the schema
+version and the version of every source that went into it.
+
+## Why the file is in the repository and not only in the releases
+
+Browsers cannot fetch it from a release asset: GitHub serves those without an
+`Access-Control-Allow-Origin` header, so a cross-origin request from the web app
+is blocked. `raw.githubusercontent.com` sends `access-control-allow-origin: *`,
+so the app fetches the committed file, pinned to a commit SHA:
+
+```
+https://raw.githubusercontent.com/simiriva95/jisho-dictionary-data/<sha>/dictionary.sqlite.gz
+```
+
+Anyone hosting the app themselves is better off serving the file from their own
+origin, which avoids the question entirely.
 
 ## Sources and licences
 
